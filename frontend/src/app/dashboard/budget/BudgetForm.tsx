@@ -57,11 +57,11 @@ const BudgetForm: React.FC<BudgetFormProps> = ({ onClose, setBudgets, selectedBu
 
       if (selectedBudget) {
         // Update an existing budget
-        const data = await axios.put(`http://localhost:1337/api/budgets/${selectedBudget.id}`, {
+        const data = await axios.put(`http://localhost:1337/api/budgets/${selectedBudget.documentId}`, {
           data: { category, amount: newAmount },
         });
         console.log(data);
-        setBudgets((prev) => prev.map((inv) => (inv.id === selectedBudget.id ? { ...inv, ...formFields, amount: newAmount } : inv)));
+        setBudgets((prev) => prev.map((inv) => (inv.documentId === selectedBudget.documentId ? { ...inv, ...formFields, amount: newAmount } : inv)));
         window.location.reload();
       } else {
         // Create a new budget

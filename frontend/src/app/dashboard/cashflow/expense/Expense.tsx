@@ -7,7 +7,6 @@ import { FaEdit, FaPlus, FaTrash } from 'react-icons/fa';
 import { BsThreeDotsVertical } from "react-icons/bs";
 
 interface Expense {
-  id: number;
   documentId: string;
   description: string;
   createdAt: string;
@@ -22,7 +21,7 @@ const Expense: React.FC<ExpenseProps> = ({ refreshCashflow }) => {
   const [expenses, setExpenses] = useState<Expense[]>([]);
   const [isExpenseFormOpen, setIsExpenseFormOpen] = useState(false);
   const [selectedExpense, setSelectedExpense] = useState<Expense | null>(null);
-  const [dropdownOpen, setDropdownOpen] = useState<number | null>(null);
+  const [dropdownOpen, setDropdownOpen] = useState<string | null>(null);
 
   useEffect(() => {
     fetchExpenses();
@@ -78,8 +77,8 @@ const Expense: React.FC<ExpenseProps> = ({ refreshCashflow }) => {
     return format(date, 'yyyy-MM-dd HH:mm:ss');
   };
 
-  const toggleDropdown = (id: number) => {
-    setDropdownOpen(dropdownOpen === id ? null : id);
+  const toggleDropdown = (documentId: string) => {
+    setDropdownOpen(dropdownOpen === documentId ? null : documentId);
   };
 
   return (
@@ -94,7 +93,7 @@ const Expense: React.FC<ExpenseProps> = ({ refreshCashflow }) => {
       </section>
       <article className="w-full px-5">
         {expenses.map((expense) => (
-          <article key={expense.id} className="h-full border-2 bg-gray-100 rounded-lg mt-4">
+          <article key={expense.documentId} className="h-full border-2 bg-gray-100 rounded-lg mt-4">
             <article className="py-3 px-4 border-l-4 border-red-400">
               <section className="flex flex-col">
                 <section className="flex justify-between mb-3">
@@ -102,13 +101,13 @@ const Expense: React.FC<ExpenseProps> = ({ refreshCashflow }) => {
                   <div className="relative inline-block text-left">
                     <button
                       className="p-1"
-                      onClick={() => toggleDropdown(expense.id)}
+                      onClick={() => toggleDropdown(expense.documentId)}
                     >
                       <BsThreeDotsVertical
                         className="text-gray-600 cursor-pointer ml-1 w-4 h-4"
                       />
                     </button>
-                    {dropdownOpen === expense.id && (
+                    {dropdownOpen === expense.documentId && (
                       <div className="origin-top-right absolute right-0 mt-0 mr-2 w-32 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5">
                         <div className="py-1" role="menu" aria-orientation="vertical" aria-labelledby="options-menu">
                           <div

@@ -5,7 +5,6 @@ import BudgetForm from './BudgetForm';
 import { FaEdit, FaTrash } from 'react-icons/fa';
 
 interface Budget {
-  id: number;
   documentId: string;
   category: string;
   amount: number;
@@ -44,7 +43,7 @@ const Budget: React.FC = () => {
         const res = await axios.get("http://localhost:1337/api/budget-limits");
 
         if (res.data.data && res.data.data[0]) {
-          setBudgetLimit(res.data.data[0].attributes.limit);
+          setBudgetLimit(res.data.data[0].limit);
         }
       } catch (error) {
         console.error("Error fetching budget limit:", error);
@@ -107,7 +106,7 @@ const Budget: React.FC = () => {
             <>
               <article className="lg:mt-5 pl-6 pt-4 lg:w-full w-full lg:grid lg:gap-4 lg:grid-cols-3 lg:grid-rows-3 grid -m-4 md:grid md:gap-3 md:grid-cols-2 md:grid-rows-2">
                 {budgets.map((budget) => (
-                  <article key={budget.id} className="h-full border-2 bg-gray-100 rounded-xl overflow-hidden">
+                  <article key={budget.documentId} className="h-full border-2 bg-gray-100 rounded-xl overflow-hidden">
                     <article className="py-3 px-5 border-l-8 border-teal-500">
                       {/* Your budget card content */}
                       <section className="mt-4 flex flex-row justify-between">

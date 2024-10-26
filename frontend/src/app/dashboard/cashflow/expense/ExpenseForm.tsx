@@ -4,7 +4,7 @@ import axios from 'axios';
 interface ExpenseFormProps {
   isOpen: boolean; //added this
   onClose: () => void;
-  expense: { id: number, documentId: string, description: string, amount: number } | null;
+  expense: { documentId: string, description: string, amount: number } | null;
   refreshCashflow: () => void; //added this
 }
 

@@ -369,6 +369,34 @@ export interface AdminUser extends Struct.CollectionTypeSchema {
   };
 }
 
+export interface ApiBudgetLimitBudgetLimit extends Struct.CollectionTypeSchema {
+  collectionName: 'budget_limits';
+  info: {
+    displayName: 'Budget Limit';
+    pluralName: 'budget-limits';
+    singularName: 'budget-limit';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    limit: Schema.Attribute.Decimal;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::budget-limit.budget-limit'
+    > &
+      Schema.Attribute.Private;
+    publishedAt: Schema.Attribute.DateTime;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
 export interface ApiBudgetBudget extends Struct.CollectionTypeSchema {
   collectionName: 'budgets';
   info: {
@@ -963,6 +991,7 @@ declare module '@strapi/strapi' {
       'admin::transfer-token': AdminTransferToken;
       'admin::transfer-token-permission': AdminTransferTokenPermission;
       'admin::user': AdminUser;
+      'api::budget-limit.budget-limit': ApiBudgetLimitBudgetLimit;
       'api::budget.budget': ApiBudgetBudget;
       'api::expense.expense': ApiExpenseExpense;
       'api::income.income': ApiIncomeIncome;

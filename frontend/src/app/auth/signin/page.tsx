@@ -1,9 +1,10 @@
-import SignUp from "./auth/signup/SignUp"
+import React from 'react'
+import SignIn from './SignIn'
 
 const page = () => {
   return (
     <>
-      <SignUp />
+      <SignIn />
     </>
   )
 }

@@ -1,11 +1,13 @@
 'use client'
 import Link from "next/link";
-import { FaFileInvoice, FaWallet } from "react-icons/fa";
+import { FaFileInvoice, FaWallet, FaSignOutAlt, } from "react-icons/fa";
 import { MdDashboard } from "react-icons/md";
 import { usePathname } from 'next/navigation';
 
+
 const SideNav = () => {
   const pathname = usePathname();
+
 
   return (
     <aside className="h-screen w-56 border-r-2 border-gray-300">
@@ -17,8 +19,8 @@ const SideNav = () => {
         {/* </section> */}
 
         <section className="mt-10 sxl:mt-4 items-center">
-          <Link href="/" >
-            <section className={`flex flex-row cursor-pointer ${pathname === "/" ? "text-teal-600" : "text-gray-600"}`} >
+          <Link href="/dashboard" >
+            <section className={`flex flex-row cursor-pointer ${pathname === "/dashboard" ? "text-teal-600" : "text-gray-600"}`} >
               <MdDashboard className="w-6 h-6" />
               <span className="text-lg ml-2">Overview</span>
             </section>
@@ -40,6 +42,16 @@ const SideNav = () => {
             <section className={`flex flex-row cursor-pointer ${pathname === "/dashboard/cashflow" ? "text-teal-600" : "text-gray-600"}`}>
               <FaWallet className="w-6 h-6" />
               <span className="text-lg ml-3">Cashflow</span>
+            </section>
+          </Link>
+        </section>
+
+
+        <section className="mt-10 sxl:mt-6 items-center">
+          <Link href="/auth/signin">
+            <section className="flex flex-row cursor-pointer text-gray-600">
+              <FaSignOutAlt className="w-6 h-6" />
+              <span className="text-lg ml-3">Log out</span>
             </section>
           </Link>
         </section>

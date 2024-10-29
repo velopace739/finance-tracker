@@ -7,6 +7,9 @@ import PieChart from './budget/PieChart';
 const Overview: React.FC = () => {
   const [budgets, setBudgets] = useState<{ category: string; amount: number; }[]>([]);
   const [chartType, setChartType] = useState<'bar' | 'pie'>('bar');
+  const [incomes, setIncomes] = useState<{ description: string; amount: number; }[]>([]);
+  const [expenses, setExpenses] = useState<{ description: string; amount: number; }[]>([]);
+  const [report, setReport] = useState('');
 
   useEffect(() => {
     const fetchBudgets = async () => {
@@ -22,8 +25,46 @@ const Overview: React.FC = () => {
       }
     };
 
+    const fetchIncomesAndExpenses = async () => {
+      try {
+        const incomeRes = await axios.get('http://localhost:1337/api/incomes');
+        const expenseRes = await axios.get('http://localhost:1337/api/expenses');
+
+        const incomeData = incomeRes.data.data.map((income: any) => ({
+          description: income.description,
+          amount: income.amount,
+        }));
+
+        const expenseData = expenseRes.data.data.map((expense: any) => ({
+          description: expense.description,
+          amount: expense.amount,
+        }));
+
+        setIncomes(incomeData);
+        setExpenses(expenseData);
+      } catch (error) {
+        console.error('Error fetching incomes and expenses:', error);
+      }
+    };
+
     fetchBudgets();
+    fetchIncomesAndExpenses();
   }, []);
+
+  const generateReport = async () => {
+    try {
+      const res = await axios.post("http://localhost:1337/api/generate-report", {
+        budgets,
+        incomes,
+        expenses,
+      });
+
+      setReport(res.data.report);
+    } catch (error) {
+      console.error("Failed to generate report:", error);
+      alert("Failed to generate report");
+    }
+  };
 
   const categories = budgets.map(budget => budget.category);
   const amounts = budgets.map(budget => budget.amount);
@@ -49,6 +90,28 @@ const Overview: React.FC = () => {
             <PieChart categories={categories} amounts={amounts} />
           )}
         </section>
+
+        <div className="container mx-auto py-5 flex justify-center">
+          <button
+            onClick={generateReport}
+            className="bg-teal-500 text-white py-2 px-4 rounded-lg"
+          >
+            Generate Report
+          </button>
+        </div>
+
+        {report && (
+          <div className="mb-10 p-5 bg-gray-100 rounded-lg">
+            <h3 className="text-xl font-semibold mb-2">Financial Report</h3>
+            <div id="report-content" dangerouslySetInnerHTML={{ __html: report }}></div>
+            <button
+              // onClick={printReport}
+              className="mt-4 bg-teal-500 text-white py-2 px-4 rounded-lg"
+            >
+              Export as PDF
+            </button>
+          </div>
+        )}
       </div>
     </main>
   );
